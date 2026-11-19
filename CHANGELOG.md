@@ -9,6 +9,12 @@ Rencana, belum dirilis:
 - Plugin `product` untuk PO: kandidat `prd-master`, `prd-compliance-review`, `idds-acceptance-criteria`.
 - Plugin `dev`: loop AI-to-AI dengan kriteria CodeReviewer DevSecOps sebelum push.
 
+## grooming 0.3.0
+
+### Ditambahkan
+
+- Skill `exam-prd-design`: opsi memposting komentar atas temuan yang pengguna pilih setelah laporan batch ditulis — komentar inline di PRD Confluence pada teks persis yang menjadi bukti temuan, dan komentar terpaku pada node layar Figma yang menjadi temuan. Temuan tanpa anchor di satu sisi hanya dikomentari di sisi satunya; tawaran sekali per batch; isi komentar ringkas dengan acuan ke file laporan.
+
 ## grooming 0.2.0
 
 ### Ditambahkan
