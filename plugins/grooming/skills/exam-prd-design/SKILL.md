@@ -1,6 +1,6 @@
 ---
 name: exam-prd-design
-description: Mereview kesesuaian PRD (Confluence atau .md) dengan desain Figma sebelum backlog grooming — dari satu user story sampai PRD modul besar (puluhan US, multi-platform). Menghasilkan laporan di docs/exam-prd-design-result.md berisi matriks keterlacakan, temuan berbukti, dan pertanyaan untuk PO/desainer.
+description: Mereview kesesuaian PRD (Confluence atau .md) dengan desain Figma sebelum backlog grooming — dari satu user story sampai PRD modul besar (puluhan US, multi-platform). Menghasilkan laporan di docs/exam-prd-design-result.md berisi matriks keterlacakan, temuan berbukti, dan pertanyaan untuk PO/desainer. Opsional: memposting komentar atas temuan yang pengguna pilih — inline di PRD pada teks yang menjadi bukti, terpaku pada layar Figma yang menjadi temuan.
 ---
 
 # Exam PRD ↔ Desain
@@ -11,7 +11,7 @@ Prinsip utama ada dua: **pisahkan membaca dari membandingkan** dan **kerjakan pe
 
 ## Batasan (wajib dipatuhi)
 
-- **Read-only terhadap sumber.** Jangan menulis komentar ke Confluence/Figma dan jangan mengubah apa pun di sana. Satu-satunya file yang ditulis skill ini adalah laporan hasil (lihat "Output").
+- **Read-only secara default.** Jangan mengubah apa pun di Confluence/Figma — konten halaman, layer, properti — tidak pernah. Satu-satunya penulisan di luar laporan adalah **komentar** (lihat "Komentar ke PRD & Figma"), hanya untuk temuan yang pengguna pilih secara eksplisit, maksimal satu komentar per temuan per sisi. Satu-satunya file yang ditulis skill ini adalah laporan hasil (lihat "Output").
 - **Setiap temuan wajib berbukti dari dua sisi**: ID/kutipan PRD dan nama frame + node-id Figma. Untuk temuan "tidak ada di desain", buktinya adalah daftar layar yang sudah diperiksa. Tanpa bukti, bukan temuan.
 - **Jangan menilai estetika visual** (warna, spacing, ilustrasi). Itu domain desainer. Fokus pada perilaku, konten/copy, aturan, alur, dan state.
 - **Jangan mengarang requirement.** Kalau PRD diam soal sesuatu, kategorinya "Ambigu" atau "Tidak ada di PRD", bukan "Konflik".
@@ -166,8 +166,41 @@ Setelah Tahap 4 batch aktif selesai:
 1. Tulis laporan ke **`docs/exam-prd-design-result.md`**, relatif terhadap root project (direktori kerja saat ini). Buat folder `docs/` kalau belum ada.
 2. Kalau file itu **sudah ada**, tanya pengguna **sekali**: timpa, simpan dengan akhiran nama fitur (contoh `exam-prd-design-result-reset-password.md`), atau **lanjut (append)**. Pilihan "lanjut" untuk batch berikutnya dari review yang sama: tambahkan bagian baru di bawah bagian yang ada, perbarui Ringkasan global dan daftar sisa scope di bagian atas, jangan sentuh bagian batch lama. Dalam satu sesi, keputusan ini tidak ditanya ulang tiap batch.
 3. Di chat, cukup tampilkan: path file, jumlah temuan per severity batch ini, daftar temuan Blocker/Major (satu baris per temuan), dan sisa scope (US belum direview). Jangan tempel ulang seluruh laporan.
+4. Tawarkan komentar ke PRD & Figma untuk temuan batch ini (lihat "Komentar ke PRD & Figma").
 
 Pada **mode teliti**, checkpoint Tahap 3 tetap dilakukan di chat. File baru ditulis setelah pengecekan selesai.
+
+## Komentar ke PRD & Figma (opsional)
+
+Setelah langkah Output selesai (laporan terulis, ringkasan batch di chat), tawarkan **sekali per batch**: mau memposting komentar untuk temuan batch ini? Komentar menyebut path laporan, jadi tawaran hanya dilakukan setelah file laporan ada. Kalau pengguna menolak, lanjut ke batch berikutnya tanpa menawarkan ulang batch itu.
+
+**Daftar penawaran.** Hanya temuan batch aktif, satu baris per temuan: `F-xx · Severity · Kategori · anchor: PRD/Figma/keduanya · confidence`. Sarankan semua Blocker dan Major sebagai pilihan default; sarankan mengecualikan temuan confidence Rendah kecuali pengguna tetap memilihnya. Pengguna menjawab nomor F-xx, atau "semua", atau "tidak ada". Jangan pernah memposting komentar tanpa pilihan eksplisit pengguna.
+
+**Aturan anchor.** Komentar harus menempel persis pada bukti temuan, bukan pada tempat umum:
+
+- **Confluence: komentar inline pada teks temuan.** Anchor-nya kutipan **persis** dari isi halaman sebagaimana terbaca di Tahap 1 — bukan parafrase, bukan kutipan yang memotong tautan/format markdown. Pilih bagian dalam satu blok teks dan cukup panjang untuk unik di halaman. Pakai `pageId`/link dari input Tahap 1. Nama tool komentar bisa berbeda antar versi Atlassian MCP (mis. `createConfluenceComment` untuk footer/inline, atau `createConfluenceInlineComment` pada versi lama) — cek tool yang tersedia di sesi dan ikuti skema parameternya, jangan mengasumsikan nama parameter.
+- **Figma: komentar pinned ke node temuan.** Muat skill `figma-use` sebelum memanggil `use_figma` (kalau skill plugin tidak tersedia, baca resource `skill://figma/figma-use/SKILL.md`), lalu posting dengan `figma.comments.createCommentAsync` dan `clientMeta.nodeId` = node-id pada bukti temuan — layar/node yang dikutip, bukan file atau page umum. Cek bentuk parameternya di referensi Plugin API (resource skill `figma-use`) sebelum memanggil. Pakai `sessionId`/`fileKey` yang sudah ada sejak Tahap 2; buat ulang sesi kalau sudah mati.
+- **Temuan tanpa anchor di satu sisi: lewati sisi itu.** "Tidak ada di desain" → hanya komentar Confluence; "Tidak ada di PRD" → hanya komentar Figma.
+- **Anchor inline gagal** (teks tidak ditemukan atau tool menolak): jangan jatuh ke komentar footer atau tempat umum — catat gagal di chat. Posting yang ditolak karena izin (akun pengguna tidak boleh berkomentar di file/halaman itu) juga dicatat gagal.
+- Kalau tool tulis komentar sama sekali tidak tersedia (mis. Atlassian MCP hanya scope baca), sampaikan sekali di awal penawaran dan lewati sisi tersebut.
+
+**Isi komentar.** Teks biasa, tanpa emoji, ringkas:
+
+```text
+F-03 · Konflik · Major
+
+Placeholder "Masukkan NIK" di layar login berbeda dengan PRD (US1/FR-4): "Ketik 16 digit NIK tanpa spasi".
+
+Pertanyaan untuk Desainer: copy mana yang final?
+
+Detail: docs/exam-prd-design-result.md
+```
+
+Baris terakhir memakai nama file laporan yang aktual, termasuk akhiran nama fitur kalau laporannya disimpan dengan akhiran.
+
+**Anti komentar dobel.** Cek ulang hasil `get_comments` dari Tahap 2 langkah 7: kalau node temuan sudah punya thread yang belum resolved dengan isi serupa, beri tahu pengguna sebelum memposting.
+
+**Eksekusi dan pelaporan.** Posting satu per satu; yang sudah sukses tidak dikirim ulang walau ada yang gagal setelahnya. Di Figma, komentar untuk beberapa temuan bisa dikirim dalam satu script `use_figma` — satu `createCommentAsync` per temuan, masing-masing di-`try`/`catch`, kembalikan status per temuan. Kumpulkan hasil per F-xx (sukses, atau gagal + alasannya) dan tampilkan ringkasannya di chat. Laporan tidak diubah setelah jadi — hasil posting cukup di chat. Komentar diposting atas nama akun yang terhubung ke MCP, bukan atas nama skill.
 
 ## Format laporan
 

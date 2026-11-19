@@ -8,7 +8,7 @@ Repo ini adalah **plugin marketplace Claude Code**. Skill dikelompokkan menjadi 
 
 | Plugin     | Untuk    | Skill               | Kegunaan                                                                               |
 | ---------- | -------- | ------------------- | -------------------------------------------------------------------------------------- |
-| `grooming` | Engineer | `exam-prd-design`   | Review kesesuaian PRD (Confluence) dengan desain Figma sebelum backlog grooming        |
+| `grooming` | Engineer | `exam-prd-design`   | Review kesesuaian PRD (Confluence) ↔ Figma sebelum grooming; opsi komentar temuan      |
 | `grooming` | Engineer | `boil-api-contract` | Draf kontrak API dan kartu technical grooming per story Jira, dicek ke OpenAPI backend |
 
 Rencana plugin berikutnya ada di [CHANGELOG.md](CHANGELOG.md) bagian _Unreleased_.
@@ -82,6 +82,8 @@ Kalau organisasi memakai Claude Team/Enterprise, admin bisa mewajibkan marketpla
 | ------------------- | ------------------------------------------------------------------------------------------------------- |
 | `exam-prd-design`   | MCP Atlassian dan Figma terhubung (cek dengan `/mcp`), `python3` (hanya library standar)                |
 | `boil-api-contract` | MCP Atlassian dan Figma, `python3`, di repo project: `docs/api-konvensi.md` dan `docs/api/openapi.json` |
+
+Fitur komentar opsional di `exam-prd-design` butuh akses menulis komentar di MCP Atlassian dan Figma.
 
 ## Struktur repo
 
