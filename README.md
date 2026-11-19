@@ -1,8 +1,8 @@
-# Team Skills
+# Skill AI agent untuk tim
 
-Kumpulan skill AI agent untuk alur kerja tim: dari persiapan grooming sampai development.
+Kumpulan skill untuk alur kerja tim, dari persiapan grooming sampai pengembangan.
 
-Repo ini adalah **plugin marketplace Claude Code**. Skill dikelompokkan menjadi plugin per peran atau tahap kerja, jadi setiap orang cukup memasang plugin yang relevan untuknya.
+Repo ini adalah plugin marketplace Claude Code. Kami mengelompokkan skill ke dalam plugin berdasarkan peran atau tahap kerja, jadi setiap orang cukup memasang plugin yang relevan untuknya.
 
 ## Katalog
 
@@ -10,18 +10,18 @@ Repo ini adalah **plugin marketplace Claude Code**. Skill dikelompokkan menjadi 
 | ---------- | -------- | ----------------- | ------------------------------------------------------------------------------- |
 | `grooming` | Engineer | `exam-prd-design` | Review kesesuaian PRD (Confluence) dengan desain Figma sebelum backlog grooming |
 
-Rencana plugin berikutnya ada di [CHANGELOG.md](CHANGELOG.md) bagian _Unreleased_.
+Rencana plugin berikutnya ada di bagian `Unreleased` pada [CHANGELOG.md](CHANGELOG.md).
 
 ## Instalasi
 
 ### Prasyarat akses
 
-Repo ini private. Claude Code memakai kredensial git di laptopmu sendiri (Claude Code tidak menyimpan token), jadi pastikan salah satu ini sudah beres:
+Repo ini privat. Claude Code memakai kredensial git di laptopmu sendiri dan tidak menyimpan token, jadi pastikan salah satu cara ini sudah beres:
 
-- **HTTPS**: `gh auth login`, lalu `gh auth setup-git`.
-- **SSH**: kunci SSH GitHub sudah dimuat di `ssh-agent` tanpa prompt passphrase. Kalau tidak punya kunci SSH GitHub, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`.
+- HTTPS: jalankan `gh auth login`, lalu `gh auth setup-git`.
+- SSH: kunci SSH GitHub sudah dimuat di `ssh-agent` tanpa meminta passphrase. Kalau tidak punya kunci SSH GitHub, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`.
 
-### Claude Code (direkomendasikan)
+### Claude Code (disarankan)
 
 Di dalam sesi Claude Code:
 
@@ -30,15 +30,15 @@ Di dalam sesi Claude Code:
 /plugin install grooming@peruri-dev
 ```
 
-Skill plugin dipanggil dengan prefiks nama plugin, misalnya `/grooming:exam-prd-design`. Claude juga tetap bisa memakainya otomatis berdasarkan deskripsi skill.
+Panggil skill plugin dengan prefiks nama pluginnya, misalnya `/grooming:exam-prd-design`. Claude juga tetap bisa memakainya otomatis berdasarkan deskripsi skill.
 
-**Nyalakan auto-update**: `/plugin` → **Marketplaces** → pilih `peruri-dev` → **Enable auto-update**. Tanpa ini, perbarui manual dengan `/plugin marketplace update peruri-dev`.
+Nyalakan auto-update: `/plugin` → **Marketplaces** → `peruri-dev` → **Enable auto-update**. Tanpa ini, perbarui manual dengan `/plugin marketplace update peruri-dev`.
 
 > Sudah pernah menyalin skill secara manual ke `~/.claude/skills/` atau `.claude/skills/`? Hapus salinan itu setelah memasang plugin, supaya skill yang sama tidak termuat dua kali.
 
-### Daftarkan otomatis di repo project
+### Daftarkan otomatis di repo proyek
 
-Supaya semua orang yang membuka sebuah repo project langsung ditawari plugin ini, jalankan sekali dari shell di root repo project tersebut:
+Agar semua orang yang membuka repo proyek langsung ditawari plugin ini, jalankan perintah ini sekali dari shell di root repo proyek tersebut:
 
 ```bash
 claude plugin marketplace add peruri-dev/skills --scope project
@@ -59,21 +59,21 @@ Lalu tambahkan plugin yang mau diaktifkan ke `.claude/settings.json` yang dihasi
 }
 ```
 
-### Agent lain (Cursor, Codex, Copilot, dll.)
+### Agent lain
 
-Format skill di repo ini mengikuti standar terbuka `SKILL.md`, jadi bisa dipasang dengan [skills CLI](https://skills.sh). Arahkan langsung ke folder skill-nya:
+Format skill di repo ini mengikuti standar terbuka `SKILL.md`, jadi bisa dipasang dengan [skills CLI](https://skills.sh) di agent seperti Cursor, Codex, atau Copilot. Arahkan perintahnya langsung ke folder skill:
 
 ```bash
 npx skills add https://github.com/peruri-dev/skills/tree/main/plugins/grooming/skills/exam-prd-design -a <agent>
 ```
 
-Perbarui dengan `npx skills update`. Cara ini menyalin file, jadi tidak ikut auto-update seperti plugin. Untuk satu agent, pilih **salah satu** cara (plugin atau skills CLI), jangan keduanya.
+Perbarui dengan `npx skills update`. Cara ini menyalin file, jadi tidak otomatis diperbarui seperti plugin. Untuk satu agent, pilih salah satu cara — plugin atau skills CLI — jangan keduanya.
 
-Alternatif tanpa tool: salin folder skill ke direktori skill agent-mu (misalnya `~/.claude/skills/` untuk Claude Code atau `.agents/skills/` untuk Codex/Cursor).
+Alternatif tanpa tool: salin folder skill ke direktori skill agent-mu, misalnya `~/.claude/skills/` untuk Claude Code atau `.agents/skills/` untuk Codex atau Cursor.
 
-### Untuk admin Claude Team/Enterprise (opsional)
+### Untuk admin Claude Team atau Claude Enterprise (opsional)
 
-Kalau organisasi memakai Claude Team/Enterprise, admin bisa mewajibkan marketplace ini dan menyalakan auto-update untuk semua orang lewat managed settings (`extraKnownMarketplaces` dengan `"autoUpdate": true`, plus `enabledPlugins`). Lihat [Manage plugins for your organization](https://code.claude.com/docs/en/plugins/org).
+Kalau organisasi memakai Claude Team atau Claude Enterprise, admin bisa mewajibkan marketplace ini dan menyalakan auto-update untuk semua orang lewat managed settings (`extraKnownMarketplaces` dengan `"autoUpdate": true` dan `enabledPlugins`). Lihat [panduan pengelolaan plugin untuk organisasi](https://code.claude.com/docs/en/plugins/org).
 
 ## Prasyarat per skill
 
@@ -93,4 +93,4 @@ plugins/<plugin>/
 
 ## Kontribusi
 
-Baca [CONTRIBUTING.md](CONTRIBUTING.md) sebelum menambah atau mengubah skill. Semua perubahan lewat pull request dan wajib di-review.
+Baca [CONTRIBUTING.md](CONTRIBUTING.md) sebelum menambah atau mengubah skill. Semua perubahan lewat pull request dan wajib direview.
