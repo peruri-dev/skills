@@ -18,4 +18,5 @@ Jalankan dari root repo dan pastikan semuanya lulus:
 ```bash
 claude plugin validate .
 python3 plugins/grooming/skills/exam-prd-design/scripts/tests/run_tests.py
+python3 plugins/grooming/skills/boil-api-contract/scripts/tests/run_tests.py
 ```

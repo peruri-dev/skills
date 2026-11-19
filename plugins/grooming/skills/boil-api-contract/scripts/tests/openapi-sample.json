@@ -1,0 +1,385 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "sample-backend",
+    "version": "1.0-test",
+    "description": "# Error & Success Codes\n\n## General Module\n\n### Success Codes\n\n| Code | HTTP Status | Message |\n|------|--------------|---------|\n| 000001 | 200 | Request processed successfully |\n| 000003 | 201 | Data created successfully |\n\n## Internal Error Module\n\n### Error Codes\n\n| Code | HTTP Status | Message |\n|------|--------------|---------|\n| 100003 | 400 | %s is required |\n| 100901 | 400 | Invalid item token |\n| 100902 | 400 | Item token has expired |\n\n## Other Module\n\n### Error Codes\n\n| Code | HTTP Status | Message |\n|------|--------------|---------|\n| 200001 | 500 | An internal server error occurred |\n| 200404 | 404 | Item not found |\n"
+  },
+  "paths": {
+    "/api/v1/items": {
+      "get": {
+        "operationId": "get-item-list",
+        "summary": "Get Item List",
+        "description": "List items. Requires 'ITEM.LIST' permission.",
+        "tags": [
+          "item"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "description": "Search by item name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Filter by status, comma-separated (ACTIVE, INACTIVE)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create-item",
+        "summary": "Create Item",
+        "description": "Create an item. Requires ITEM.CREATE.\n\n| Code | Context | Example Message |\n|------|---------|----------|\n| 100003 | Missing Required Field | *name* is required |",
+        "tags": [
+          "item"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Created"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/api/v1/items/{id}": {
+      "get": {
+        "operationId": "get-item-detail",
+        "summary": "Get Item Detail",
+        "tags": [
+          "item"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericAuthorizedRequestStruct {}Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/api/v1/items/claim/check": {
+      "get": {
+        "operationId": "check-item-token",
+        "summary": "Check Item Token",
+        "description": "Errors: 400 invalid (code: 100901), 400 expired (code: 100902).",
+        "tags": [
+          "item"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-API-Key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/items/{id}/photo": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      ],
+      "put": {
+        "operationId": "upload-item-photo",
+        "summary": "Upload Item Photo",
+        "tags": [
+          "item"
+        ],
+        "description": "Upload photo. Requires 'ITEM.EDIT' permission.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadItemPhotoForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/items/archived": {
+      "get": {
+        "operationId": "get-archived-items",
+        "summary": "Get Archived Items",
+        "tags": [
+          "item"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateItemRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Item name, 3-100 chars"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "BASIC",
+              "PREMIUM"
+            ]
+          },
+          "tagIds": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "kind"
+        ]
+      },
+      "GenericAuthorizedRequestStruct {}Body": {
+        "type": "object",
+        "properties": {
+          "$schema": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          }
+        }
+      },
+      "UploadItemPhotoForm": {
+        "type": "object",
+        "required": [
+          "photo"
+        ],
+        "properties": {
+          "photo": {
+            "type": "string",
+            "format": "binary",
+            "description": "PNG/JPG max 1 MB"
+          },
+          "caption": {
+            "type": "string"
+          },
+          "extras": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "$schema": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      }
+    },
+    "parameters": {
+      "PageSize": {
+        "in": "query",
+        "name": "pageSize",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    }
+  }
+}

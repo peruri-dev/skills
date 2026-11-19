@@ -1,7 +1,7 @@
 {
   "name": "grooming",
-  "version": "0.1.0",
-  "description": "Untuk engineer: persiapan backlog dan technical grooming (review PRD ↔ desain Figma)",
+  "version": "0.2.0",
+  "description": "Untuk engineer: persiapan backlog dan technical grooming (review PRD ↔ desain Figma, draf kontrak API)",
   "author": {
     "name": "peruri-dev"
   },

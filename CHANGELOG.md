@@ -6,9 +6,16 @@ Semua perubahan penting dicatat di sini, per plugin. Format mengikuti [Keep a Ch
 
 Rencana, belum dirilis:
 
-- `grooming`: pindahkan `api-contract-generator` (draf API contract FE–BE dari PRD + Figma).
 - Plugin `product` untuk PO: kandidat `prd-master`, `prd-compliance-review`, `idds-acceptance-criteria`.
 - Plugin `dev`: loop AI-to-AI dengan kriteria CodeReviewer DevSecOps sebelum push.
+
+## grooming 0.2.0
+
+### Ditambahkan
+
+- Skill `boil-api-contract`: draf kontrak API dan kartu technical grooming (Backend API + Frontend) per story Jira, dengan gating dari temuan `exam-prd-design`, cek reuse ke OpenAPI backend, dan push opsional ke FigJam.
+- Script `openapi_index.py` (indeks endpoint, katalog kode error, statistik konvensi, `--exclude` untuk uji) beserta fixture dummy dan test regresi. Parameter di level path digabung dengan level operasi, body multipart di-resolve dari `$ref` dan menghormati `required`, `$ref` ke semua komponen lokal (`#/components/parameters/`, dll.) ikut di-resolve, dan file yang tidak ada memberi pesan jelas tanpa traceback.
+- Template konvensi API per project (`references/konvensi-template.md`).
 
 ## grooming 0.1.0
 
