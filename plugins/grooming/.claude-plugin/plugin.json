@@ -1,0 +1,9 @@
+{
+  "name": "grooming",
+  "version": "0.1.0",
+  "description": "Untuk engineer: persiapan backlog dan technical grooming (review PRD ↔ desain Figma)",
+  "author": {
+    "name": "peruri-dev"
+  },
+  "keywords": ["grooming", "prd", "figma", "review"]
+}

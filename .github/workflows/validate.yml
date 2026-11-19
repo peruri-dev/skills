@@ -1,0 +1,63 @@
+name: Validate skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: JSON manifest valid
+        run: |
+          for f in .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok $f"
+          done
+
+      - name: Test regresi script skill
+        run: |
+          status=0
+          for t in plugins/*/skills/*/scripts/tests/run_tests.py; do
+            [ -e "$t" ] || continue
+            echo "::group::$t"
+            python3 -I "$t" || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: Versi plugin naik kalau isinya berubah
+        if: github.event_name == 'pull_request'
+        run: |
+          base="origin/${{ github.base_ref }}"
+          status=0
+          for dir in plugins/*/; do
+            plugin=$(basename "$dir")
+            if git diff --quiet "$base"...HEAD -- "$dir"; then
+              continue
+            fi
+            manifest="$dir.claude-plugin/plugin.json"
+            if git diff "$base"...HEAD -- "$manifest" | grep -q '^[+].*"version"'; then
+              echo "ok $plugin: versi naik"
+            else
+              echo "::error file=$manifest::Plugin '$plugin' berubah tapi version di plugin.json tidak naik"
+              status=1
+            fi
+          done
+          exit $status
+
+      # Opsional: validasi resmi Claude Code. Aktifkan setelah dicoba di runner kalian,
+      # karena butuh instalasi Claude Code CLI dari npm.
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "22"
+      # - run: npm install -g @anthropic-ai/claude-code
+      # - run: claude plugin validate .

@@ -1,0 +1,14 @@
+{
+  "name": "peruri-dev",
+  "description": "Skill AI agent tim: persiapan grooming, product, dan development",
+  "owner": {
+    "name": "peruri-dev"
+  },
+  "plugins": [
+    {
+      "name": "grooming",
+      "source": "./plugins/grooming",
+      "description": "Untuk engineer: persiapan backlog dan technical grooming (review PRD ↔ desain Figma)"
+    }
+  ]
+}

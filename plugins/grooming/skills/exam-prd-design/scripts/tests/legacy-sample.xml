@@ -1,0 +1,14 @@
+<canvas id="0:2" name="Registrasi">
+  <frame id="h:1" name="↳ Registrasi" x="0" y="0" width="5000" height="56"/>
+  <frame id="h:2" name="↳ Ubah Nomor HP" x="6000" y="0" width="4000" height="56"/>
+  <frame id="a:1" name="Frame 1234" x="0" y="200" width="1440" height="900"><frame id="cp:0" name="Captcha" hidden="true" x="0" y="0" width="1" height="1"><text id="ct:0" name="I'm not a robot" x="0" y="0" width="1" height="1"/></frame><text id="t1" name="Daftar Akun" x="0" y="0" width="1" height="1"/></frame>
+  <frame id="a:2" name="Frame 1235" x="1540" y="200" width="1440" height="900"><frame id="cp:1" name="Captcha" hidden="true" x="0" y="0" width="1" height="1"><text id="ct:1" name="I'm not a robot" x="0" y="0" width="1" height="1"/></frame></frame>
+  <frame id="h:3" name="↳ OTP salah" x="1540" y="1150" width="1440" height="56"/>
+  <frame id="a:3" name="Frame 1236" x="1540" y="1500" width="1440" height="900"><text id="t3" name="Kode OTP salah" x="0" y="0" width="1" height="1"/><text id="t3h" name="Syarat survei (modul lain)" hidden="true" x="0" y="0" width="1" height="1"/></frame>
+  <frame id="a:4" name="Ubah Nomor / Default" x="6000" y="200" width="1440" height="900"><frame id="cp:2" name="Captcha" hidden="true" x="0" y="0" width="1" height="1"><text id="ct:2" name="I'm not a robot" x="0" y="0" width="1" height="1"/></frame></frame>
+  <frame id="c:1" name="Label · Nomor sudah dipakai" x="6000" y="1100" width="800" height="30"/>
+  <frame id="a:5" name="Ubah Nomor / Error" x="6000" y="1160" width="1440" height="900"/>
+  <frame id="a:6" name="Modal · Batal ubah" x="7540" y="200" width="480" height="320"/>
+  <vector id="v:1" name="Arrow" x="1440" y="600" width="100" height="2"/>
+  <text id="tx:1" name="catatan desainer" x="0" y="2500" width="200" height="20"/>
+</canvas>
